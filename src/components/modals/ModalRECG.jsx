@@ -7,6 +7,8 @@ import Table from "../Table";
 import FormRECG from "../form/FormRECG";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
+import { useEffect } from "react";
+
 function FechaFormateada({ fechaISO }) {
   const formatearFecha = (fechaISO) => {
     const fecha = new Date(fechaISO);
@@ -23,6 +25,28 @@ export default function ModalRECG({
   handleShowToast,
   estatus,
 }) {
+  const [mesSeleccionado, setMesSeleccionado] = useState("");
+  const [mesesDisponibles, setMesesDisponibles] = useState([]);
+
+  // Estados para paginación
+  const [currentPage, setCurrentPage] = useState(0);
+  const resultadosPorPagina = 10;
+  const endpoint = "http://10.200.10.249:3001/api";
+
+  useEffect(() => {
+    const fetchMesesDisponibles = async () => {
+      try {
+        const response = await fetch(`${endpoint}/getRecgMesesDisponibles`);
+        const data = await response.json();
+        setMesesDisponibles(data);
+      } catch (error) {
+        console.error("Error al cargar meses disponibles:", error);
+      }
+    };
+
+    fetchMesesDisponibles();
+  }, []);
+
   const defaultValues = {
     interlocutor: null,
     estado: null,
@@ -37,11 +61,6 @@ export default function ModalRECG({
   const [datos, setDatos] = useState("");
   const [resumenRECG, setResumenRECG] = useState([]);
   const [loadingResumen, setLoadingResumen] = useState(false);
-
-  // Estados para paginación
-  const [currentPage, setCurrentPage] = useState(0);
-  const resultadosPorPagina = 10;
-  const endpoint = "http://10.200.10.41:3001/api";
 
   // Lógica de paginación
   const pagesVisited = currentPage * resultadosPorPagina;
@@ -62,7 +81,6 @@ export default function ModalRECG({
   };
 
   const onSubmit = async (data) => {
-    console.log("Datos enviados:", data);
     setLoading(true);
     try {
       const response = await fetch(`${endpoint}/getRecg`, {
@@ -73,7 +91,7 @@ export default function ModalRECG({
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      console.log("Resultados de la consulta:", result);
+
       setResultados(result);
       setDatos(data);
       if (!result || result.length === 0) {
@@ -138,22 +156,36 @@ export default function ModalRECG({
   const generaResumen = async (selected) => {
     setLoadingResumen(true);
 
+    let fechaInicio = null;
+    let fechaFin = null;
+
+    if (mesSeleccionado) {
+      const [año, mes] = mesSeleccionado.split("-");
+      fechaInicio = new Date(año, mes - 2, 1);
+      fechaFin = new Date(año, mes - 1, 1);
+    }
+
     try {
       let url = "";
       if (selected === "resumen_totales") {
         url = `${endpoint}/getRecgTotales`;
       } else if (selected === "resumen_operadoras") {
         url = `${endpoint}/getRecgTotalesOperadoras`;
+      } else if (selected === "resumen_privados") {
+        url = `${endpoint}/getRecgTotalesPrivados`;
       }
 
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ estatus }),
+        body: JSON.stringify({
+          estatus,
+          fechaInicio,
+          fechaFin,
+        }),
       });
 
       const result = await response.json();
-      console.log("Resultados de la consulta total:", result);
       setResumenRECG(result);
 
       if (!result || result.length === 0) {
@@ -260,6 +292,38 @@ export default function ModalRECG({
                       ? "Ocultar formulario"
                       : "Formulario de búsqueda"}
                   </button>
+                </div>
+              )}
+
+              {selectedReporte !== "especifica" && (
+                <div className="col form-floating mb-3">
+                  <select
+                    className="form-control"
+                    id="floatingMesSeleccionado"
+                    aria-label="Seleccione Mes"
+                    value={mesSeleccionado}
+                    onChange={(e) => setMesSeleccionado(e.target.value)}
+                  >
+                    <option value="">Seleccione mes</option>
+                    {mesesDisponibles.map((mes) => {
+                      const [year, month] = mes.split("-");
+                      const nombreMes = new Date(
+                        Number(year),
+                        Number(month) - 1
+                      ).toLocaleDateString("es-VE", {
+                        month: "long",
+                        year: "numeric",
+                      });
+                      return (
+                        <option key={mes} value={mes}>
+                          {nombreMes}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <label className="z-0" htmlFor="floatingMesSeleccionado">
+                    Mes
+                  </label>
                 </div>
               )}
 

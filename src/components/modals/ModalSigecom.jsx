@@ -14,7 +14,7 @@ export default function ModalSigecom({ show, handleClose, handleShowToast }) {
   const onSubmit = async (data, resetForm) => {
     try {
       console.log("Datos enviados:", data);
-      const response = await fetch("http://10.200.10.41:3001/api/getSigecom", {
+      const response = await fetch("http://10.200.10.249:3001/api/getSigecom", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

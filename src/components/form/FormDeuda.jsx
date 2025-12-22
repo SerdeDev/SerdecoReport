@@ -29,7 +29,7 @@ function FormDeuda({ onSubmit, defaultValues, handleClose }) {
     fetchData();
   }, [defaultValues, reset]);
 
-  const enpoint = "http://10.200.10.41:3001/api";
+  const enpoint = "http://10.200.10.249:3001/api";
 
   const fetchData = async () => {
     try {

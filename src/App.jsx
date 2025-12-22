@@ -11,6 +11,7 @@ import Home from "./pages/home/Home";
 import Comercial from "./pages/comercial/Comercial.jsx";
 import Recaudacion from "./pages/recaudacion/Recaudacion.jsx";
 import DeudaConsulta from "./pages/deuda/deuda.jsx";
+import DeudaCorpoelec from "./pages/deudaCorpoelec/deudaCorpoelec.jsx";
 import ConsultaCedula from "./pages/deuda/ConsultaCedula.jsx";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/Comercial" element={<Comercial />} />
         <Route path="/Recaudacion" element={<Recaudacion />} />
         <Route path="/DeudaConsulta" element={<DeudaConsulta />} />
+        <Route path="/DeudaCorpoelec" element={<DeudaCorpoelec />} />
         <Route path="/CedulaConsulta" element={<ConsultaCedula />} />
       </Routes>
     </>

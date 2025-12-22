@@ -23,7 +23,7 @@ export const FormConsultaCedula = () => {
 
     try {
       const res = await fetch(
-        "http://10.200.10.41:3001/api/postUsuarioCatastro",
+        "http://10.200.10.249:3001/api/postUsuarioCatastro",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

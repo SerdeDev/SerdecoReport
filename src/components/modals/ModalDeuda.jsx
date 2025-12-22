@@ -38,7 +38,7 @@ export default function ModalDeuda({
   // Estados para paginación
   const [currentPage, setCurrentPage] = useState(0);
   const resultadosPorPagina = 10;
-  const endpoint = "http://10.200.10.41:3001/api";
+  const endpoint = "http://10.200.10.249:3001/api";
 
   // Lógica de paginación
   const pagesVisited = currentPage * resultadosPorPagina;

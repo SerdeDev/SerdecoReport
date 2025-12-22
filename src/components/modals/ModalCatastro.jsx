@@ -27,16 +27,16 @@ export default function ModalCatastro({
 
   const [selectedReporte, setSelectedConsulta] = useState("");
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [resultados, setResultados] = useState([]);
   const [datos, setDatos] = useState("");
   const [resumenCnae, setResumenCnae] = useState([]);
   const [loadingResumen, setLoadingResumen] = useState(false);
+  const [loadingExport, setLoadingExport] = useState(false);
 
   // Estados para paginación
   const [currentPage, setCurrentPage] = useState(0);
   const resultadosPorPagina = 10; // Puedes ajustar este valor
-  const enpoint = "http://10.200.10.41:3001/api";
+  const enpoint = "http://10.200.10.249:3001/api";
   // Lógica de paginación
   const pagesVisited = currentPage * resultadosPorPagina;
   const displayResultados = resultados.slice(
@@ -80,7 +80,7 @@ export default function ModalCatastro({
       if (!result || result.length === 0) {
         handleShowToast("No se encontraron resultados");
         setLoading(false);
-        setProgress(0);
+
         return;
       }
 
@@ -91,24 +91,36 @@ export default function ModalCatastro({
     } finally {
       setTimeout(() => {
         setLoading(false);
-        setProgress(0);
       }, 1000);
     }
   };
 
-  const Exportar = (result, data) => {
-    setProgress(10);
-    if (!data.interlocutor) {
-      // Agrupar por interlocutor
-      const grupos = result.reduce((acc, item) => {
-        if (!acc[item.interlocutor]) acc[item.interlocutor] = [];
-        acc[item.interlocutor].push(item);
-        return acc;
-      }, {});
+  const Exportar = async (result, data) => {
+    setLoadingExport(true);
 
-      Object.entries(grupos).forEach(([inter, items]) => {
+    try {
+      if (!data.interlocutor) {
+        const grupos = result.reduce((acc, item) => {
+          if (!acc[item.interlocutor]) acc[item.interlocutor] = [];
+          acc[item.interlocutor].push(item);
+          return acc;
+        }, {});
+
+        for (const [inter, items] of Object.entries(grupos)) {
+          const fileNameParts = [
+            inter,
+            data.cedula,
+            data.cuentaContrato,
+            data.estado,
+            data.municipio,
+          ]
+            .filter(Boolean)
+            .join("_");
+          await exportToExcel(items, `CATASTRO_${fileNameParts}.xlsx`);
+        }
+      } else {
         const fileNameParts = [
-          inter,
+          data.interlocutor,
           data.cedula,
           data.cuentaContrato,
           data.estado,
@@ -116,26 +128,21 @@ export default function ModalCatastro({
         ]
           .filter(Boolean)
           .join("_");
-        exportToExcel(items, `CATASTRO_${fileNameParts}.xlsx`);
-      });
-      setProgress(60); // Simula progreso
-    } else {
-      const fileNameParts = [
-        data.interlocutor,
-        data.cedula,
-        data.cuentaContrato,
-        data.estado,
-        data.municipio,
-      ]
-        .filter(Boolean)
-        .join("_");
-      exportToExcel(
-        result,
-        `CATASTRO${fileNameParts ? "_" + fileNameParts : ""}.xlsx`
-      );
-      setProgress(60); // Simula progreso
+        await exportToExcel(
+          result,
+          `CATASTRO${fileNameParts ? "_" + fileNameParts : ""}.xlsx`
+        );
+      }
+
+      handleShowToast("Exportación completada");
+    } catch (error) {
+      console.error("Error exportando:", error);
+      handleShowToast("Error al exportar");
+    } finally {
+      setTimeout(() => {
+        setLoadingExport(false);
+      }, 1000);
     }
-    setProgress(100);
   };
 
   {
@@ -203,15 +210,17 @@ export default function ModalCatastro({
                   type="button"
                   className="btn"
                   onClick={handleClose}
-                  aria-label="Cerrar"
-                  disabled={loading || loadingResumen}
+                  disabled={loading || loadingResumen || loadingExport}
                   style={{
                     backgroundColor: "#198754",
                     color: "white",
                     border: "none",
-                    opacity: loading || loadingResumen ? 0.6 : 1,
+                    opacity:
+                      loading || loadingResumen || loadingExport ? 0.6 : 1,
                     cursor:
-                      loading || loadingResumen ? "not-allowed" : "pointer",
+                      loading || loadingResumen || loadingExport
+                        ? "not-allowed"
+                        : "pointer",
                   }}
                 >
                   <FontAwesomeIcon icon={faArrowLeft} /> Volver
@@ -304,9 +313,29 @@ export default function ModalCatastro({
                     <button
                       className="btn btn-success"
                       onClick={() => Exportar(resultados, datos)}
-                      disabled={loading}
+                      disabled={loading || loadingResumen || loadingExport}
+                      style={{
+                        opacity:
+                          loading || loadingResumen || loadingExport ? 0.6 : 1,
+                        cursor:
+                          loading || loadingResumen || loadingExport
+                            ? "not-allowed"
+                            : "pointer",
+                      }}
                     >
-                      <FontAwesomeIcon icon={faDownload} />
+                      {loadingExport ? (
+                        <>
+                          <div
+                            className="spinner-border spinner-border-sm me-2"
+                            role="status"
+                          />
+                          Exportando...
+                        </>
+                      ) : (
+                        <>
+                          <FontAwesomeIcon icon={faDownload} /> Exportar
+                        </>
+                      )}
                     </button>
                   </div>
                   <div className="table-responsive m-4 ">

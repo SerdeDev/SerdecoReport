@@ -33,7 +33,7 @@ function FormCatastro({ onSubmit, defaultValues, handleClose }) {
     fetchData(); // Carga datos desde el backend
   }, [defaultValues, reset]);
 
-  const enpoint = "http://10.200.10.41:3001/api"; // URL base del backend
+  const enpoint = "http://10.200.10.249:3001/api"; // URL base del backend
 
   // Función para obtener datos desde el backend
   const fetchData = async () => {

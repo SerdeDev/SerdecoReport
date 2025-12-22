@@ -10,6 +10,20 @@ function FormRECG({ onSubmit, defaultValues, handleClose }) {
   const [interlocutores, setInterlocutores] = useState([]);
   const [estados, setEstados] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mesSeleccionado, setMesSeleccionado] = useState("");
+  const [mesesDisponibles, setMesesDisponibles] = useState([]);
+
+  const fetchMesesDisponibles = async () => {
+    try {
+      const response = await fetch(
+        "http://10.200.10.249:3001/api/getRecgMesesDisponibles"
+      );
+      const data = await response.json();
+      setMesesDisponibles(data); // Ejemplo: ["2025-08", "2025-09"]
+    } catch (error) {
+      console.error("Error al cargar meses disponibles:", error);
+    }
+  };
 
   const {
     register,
@@ -28,9 +42,10 @@ function FormRECG({ onSubmit, defaultValues, handleClose }) {
   useEffect(() => {
     reset(defaultValues);
     fetchData();
+    fetchMesesDisponibles();
   }, [defaultValues, reset]);
 
-  const enpoint = "http://10.200.10.41:3001/api";
+  const enpoint = "http://10.200.10.249:3001/api";
 
   const fetchData = async () => {
     try {
@@ -101,23 +116,35 @@ function FormRECG({ onSubmit, defaultValues, handleClose }) {
       label: mun.municipio,
     }));
 
+  // 📌 Ajuste aquí: enviar fechas como strings
   const onSubmitForm = async (data) => {
-    setLoading(true); // desactiva el botón
+    setLoading(true);
+
+    const payload = { ...data };
+
+    if (mesSeleccionado) {
+      const [año, mes] = mesSeleccionado.split("-");
+      const fechaInicio = `${año}-${mes}-01`;
+      const fechaFin = new Date(año, mes, 1).toISOString().split("T")[0]; // primer día del siguiente mes
+
+      payload.mesSeleccionado = mesSeleccionado;
+      payload.fechaInicio = fechaInicio;
+      payload.fechaFin = fechaFin;
+    }
 
     try {
-      console.log("Datos del formulario:", data);
-      await onSubmit(data, reset); // espera que termine
+      await onSubmit(payload, reset);
     } catch (error) {
       console.error("Error al generar resumen:", error);
     } finally {
-      setLoading(false); // reactiva el botón
+      setLoading(false);
     }
   };
 
   return (
     <form className="row g-3" onSubmit={handleSubmit(onSubmitForm)}>
       <div className="row g-3">
-        {/* Select Estado */}
+        {/* Select Interlocutor */}
         <div className="col-3">
           <Controller
             control={control}
@@ -148,6 +175,33 @@ function FormRECG({ onSubmit, defaultValues, handleClose }) {
               </div>
             )}
           />
+        </div>
+
+        {/* Select Mes */}
+        <div className="col-3">
+          <select
+            className="form-select"
+            id="mesSeleccionado"
+            value={mesSeleccionado}
+            onChange={(e) => setMesSeleccionado(e.target.value)}
+          >
+            <option value="">Seleccione Mes</option>
+            {mesesDisponibles.map((mes) => {
+              const [year, month] = mes.split("-");
+              const nombreMes = new Date(
+                Number(year),
+                Number(month) - 1
+              ).toLocaleDateString("es-VE", {
+                month: "long",
+                year: "numeric",
+              });
+              return (
+                <option key={mes} value={mes}>
+                  {nombreMes}
+                </option>
+              );
+            })}
+          </select>
         </div>
 
         {/* Select Estado */}
@@ -217,6 +271,8 @@ function FormRECG({ onSubmit, defaultValues, handleClose }) {
             )}
           />
         </div>
+
+        {/* Select Servicio */}
         <div className="col-3">
           <select
             className={`form-select flex-grow-0 bg-light ${

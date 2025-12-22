@@ -31,7 +31,7 @@ function FormSigecom({ onSubmit, defaultValues, handleClose }) {
     // eslint-disable-next-line
   }, [defaultValues, reset]);
 
-  const enpoint = "http://10.200.10.41:3001/api";
+  const enpoint = "http://10.200.10.249:3001/api";
 
   const fetchEstado = async () => {
     try {

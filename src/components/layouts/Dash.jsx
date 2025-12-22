@@ -6,7 +6,7 @@ import {
   faHouse,
   faIdCardClip,
   faWallet,
-  faClipboardUser,
+  faMoneyBill,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "../../assets/css/dash.css";
@@ -80,6 +80,23 @@ function Sidebar({ children }) {
                   <FontAwesomeIcon icon={faIdCardClip} className="fs-5 me-2" />
                   {!isCollapsed && (
                     <span className="fs-5 d-none d-sm-inline">Comercial</span>
+                  )}
+                </NavLink>
+              </li>
+
+              {/* Recaudacion */}
+              <li className="nav-item">
+                <NavLink
+                  to="/Recaudacion"
+                  className={({ isActive }) =>
+                    `nav-link text-decoration-none ${
+                      isActive ? "active bg-warning text-success" : "text-white"
+                    }`
+                  }
+                >
+                  <FontAwesomeIcon icon={faMoneyBill} className="fs-5 me-2" />
+                  {!isCollapsed && (
+                    <span className="fs-5 d-none d-sm-inline">Recaudación</span>
                   )}
                 </NavLink>
               </li>
