@@ -5,6 +5,7 @@ import {
   faMoneyBillWheat,
   faPlugCircleCheck,
   faRightToBracket,
+  faFileContract,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -27,6 +28,9 @@ export default function Card({ modalS, reporte }) {
             )}
             {reporte === "RECG" && (
               <FontAwesomeIcon icon={faMoneyBillTransfer} className="fs-1" />
+            )}
+            {reporte === "DEUDA MASIVA" && (
+              <FontAwesomeIcon icon={faFileContract} className="fs-1" />
             )}
             {reporte === "ANTICIPOS" && (
               <FontAwesomeIcon icon={faMoneyBillWheat} className="fs-1" />

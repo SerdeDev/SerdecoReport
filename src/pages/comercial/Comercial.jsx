@@ -6,12 +6,14 @@ import { Toast } from "bootstrap/dist/js/bootstrap.bundle.min";
 import ModalCatastro from "../../components/modals/ModalCatastro";
 import ModalDeuda from "../../components/modals/ModalDeuda";
 import ModalRECG from "../../components/modals/ModalRECG";
+import ModalDeudaMasiva from "../../components/modals/ModalDeudaMasiva";
 
 export default function Comercial() {
   const [showModalSigecom, setShowModalSigecom] = useState(false);
   const [showModalCatastro, setShowModalCatastro] = useState(false);
   const [showModalDeuda, setShowModalDeuda] = useState(false);
   const [showModalRECG, setShowModalRECG] = useState(false);
+  const [showModalDeudaMasiva, setShowModalDeudaMasiva] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [showToast, setShowToast] = useState(false);
 
@@ -29,6 +31,11 @@ export default function Comercial() {
   const handleCloseModalRECG = () => {
     setShowModalRECG(false);
   };
+
+  const handleCloseModalDeudaMasiva = () => {
+    setShowModalDeudaMasiva(false);
+  };
+
   const handleShowToast = (message) => {
     setToastMessage(message);
     setShowToast(true);
@@ -73,6 +80,12 @@ export default function Comercial() {
         handleShowToast={handleShowToast}
         estatus={{ estatusComer: true }}
       />
+      <ModalDeudaMasiva
+        show={showModalDeudaMasiva}
+        handleClose={handleCloseModalDeudaMasiva}
+        handleShowToast={handleShowToast}
+        estatus={{ estatusComer: true }}
+      />
 
       <div className="d-flex justify-content-between align-items-center">
         <h5 className="card-title fs-3">Comercial</h5>
@@ -98,6 +111,12 @@ export default function Comercial() {
           </div>
           <div className="col">
             <Card modalS={() => setShowModalRECG(true)} reporte={"RECG"} />
+          </div>
+          <div className="col">
+            <Card
+              modalS={() => setShowModalDeudaMasiva(true)}
+              reporte={"DEUDA MASIVA"}
+            />
           </div>
         </div>
       </div>

@@ -85,31 +85,23 @@ export default function Recaudacion() {
       />
 
       <div className="d-flex justify-content-between align-items-center">
-        <h5 className="card-title fs-3">Recaudacion</h5>
+        <h5 className="card-title fs-3">Recaudación</h5>
       </div>
       <div className="container">
-        <div className="form-floating mb-3 mt-3">
-          <input
-            type="search"
-            className="form-control"
-            placeholder="Buscar"
-            aria-label="Buscar"
-          />
-          <label htmlFor="floatingInput">Buscar Reporte</label>
-        </div>
+        <div className="mb-3 mt-3" style={{ height: "58px" }}></div>
         <div className="row row-cols-1 row-cols-md-3 g-4">
-          <div className="col">
+          {/* <div className="col">
             <Card
               modalS={() => setShowModalAnticipo(true)}
               reporte={"ANTICIPOS"}
             />
           </div>
-          <div className="col">
+        <div className="col">
             <Card
               modalS={() => setShowModalSigecom(true)}
               reporte={"SIGECOM"}
             />
-          </div>
+          </div>*/}
           <div className="col">
             <Card
               modalS={() => setShowModalCatastro(true)}
