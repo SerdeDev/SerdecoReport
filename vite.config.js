@@ -8,11 +8,11 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   server: {
-    host: "10.200.10.40",
-    allowedHosts: ["10.200.10.40"],
+    host: "10.200.10.249",
+    allowedHosts: ["10.200.10.249"],
     proxy: {
       "/api": {
-        target: "https://report.com.ve",
+        target: "http://localhost:3001",
         changeOrigin: true,
         secure: false,
       },

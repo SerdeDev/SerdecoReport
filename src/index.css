@@ -24,17 +24,20 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Títulos */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
+/* Botones genéricos (no corporativos) */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -46,14 +49,19 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+/* Hover genérico */
 button:hover {
   border-color: #646cff;
 }
+
+/* Focus accesible */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Modo claro */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -66,3 +74,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.logout-btn {
+  background-color: #fff;
+  color: #198754;
+  font-weight: 600;
+  border: 2px solid #198754;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-btn:hover {
+  background-color: #198754;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.logout-btn:active {
+  background-color: #146c43;
+  border-color: #146c43;
+  transform: scale(0.97);
+}
+
+
+/* 🔧 Corrección importante:
+   No aplicamos estilos globales a TODOS los botones,
+   los corporativos (como .login-btn) se definen en App.css.
+   Esto evita que el botón Ingresar pierda su diseño verde institucional.
+*/

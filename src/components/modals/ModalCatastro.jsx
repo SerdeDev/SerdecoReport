@@ -11,7 +11,7 @@ export default function ModalCatastro({
   show,
   handleClose,
   handleShowToast,
-  estatus,
+
 }) {
   const defaultValues = {
     interlocutor: "",
@@ -23,7 +23,7 @@ export default function ModalCatastro({
     servicio: "",
   };
 
-  console.log(estatus);
+
 
   const [selectedReporte, setSelectedConsulta] = useState("");
   const [loading, setLoading] = useState(false);
@@ -173,7 +173,7 @@ export default function ModalCatastro({
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ estatus }),
+        
       });
 
       const data = await response.json();

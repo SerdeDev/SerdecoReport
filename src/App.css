@@ -1,41 +1,141 @@
+/* Fondo corporativo */
 #root {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
+  background: linear-gradient(135deg, #198754 0%, #ffffff 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Roboto", "Open Sans", sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Card central del login */
+.login-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-@keyframes logo-spin {
+/* Logo institucional */
+.login-logo {
+  display: block;
+  margin: 0 auto 1rem auto;
+  width: 120px;
+}
+
+/* Título corporativo */
+.login-title {
+  text-align: center;
+  font-weight: 600;
+  color: #198754;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón corporativo de Ingresar */
+.login-btn {
+  background-color: #198754; /* verde institucional */
+  border: none;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-btn:hover {
+  background-color: #146c43; /* tono más oscuro al pasar el mouse */
+  transform: scale(1.03);    /* efecto de zoom elegante */
+}
+
+.login-btn:active {
+  background-color: #0f5132; /* aún más oscuro al hacer click */
+  transform: scale(0.97);
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 0.6rem;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+.form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Alert corporativo */
+.alert-danger {
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(-15px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.btn.login-btn {
+  background-color: #198754 !important;
+  color: #fff !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.card {
-  padding: 2em;
+.btn.login-btn:hover {
+  background-color: #146c43 !important;
+  transform: scale(1.03);
 }
 
-.read-the-docs {
-  color: #888;
+.btn.login-btn:active {
+  background-color: #0f5132 !important;
+  transform: scale(0.97);
 }
+
+.logout-btn {
+  background-color: #fff;            /* fondo blanco */
+  color: #198754;                    /* verde institucional */
+  font-weight: 600;
+  border: 2px solid #198754;         /* borde verde */
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-btn:hover {
+  background-color: #198754;         /* fondo verde */
+  color: #fff;                       /* texto blanco */
+  transform: scale(1.05);            /* efecto zoom */
+}
+
+.logout-btn:active {
+  background-color: #146c43;         /* verde más oscuro */
+  border-color: #146c43;
+  transform: scale(0.97);
+}
+
