@@ -68,12 +68,12 @@ export default function Comercial() {
         handleShowToast={handleShowToast}
         estatus={{ estatusComer: true }}
       />
-      <ModalDeuda
+      {/*<ModalDeuda
         show={showModalDeuda}
         handleClose={handleCloseModalDeuda}
         handleShowToast={handleShowToast}
         estatus={{ estatusComer: true }}
-      />
+      />*/}
       <ModalRECG
         show={showModalRECG}
         handleClose={handleCloseModalRECG}
@@ -106,9 +106,9 @@ export default function Comercial() {
               reporte={"CATASTRO"}
             />
           </div>
-          <div className="col">
+          {/*<div className="col">
             <Card modalS={() => setShowModalDeuda(true)} reporte={"DEUDA"} />
-          </div>
+          </div>*/}
           <div className="col">
             <Card modalS={() => setShowModalRECG(true)} reporte={"RECG"} />
           </div>

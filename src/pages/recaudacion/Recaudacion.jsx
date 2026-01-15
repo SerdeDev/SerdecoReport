@@ -66,12 +66,12 @@ export default function Recaudacion() {
         handleShowToast={handleShowToast}
         estatus={{ estatusRecau: true }}
       />
-      <ModalDeuda
+      {/*<ModalDeuda
         show={showModalDeuda}
         handleClose={handleCloseModalDeuda}
         handleShowToast={handleShowToast}
         estatus={{ estatusRecau: true }}
-      />
+      />*/}
       <ModalRECG
         show={showModalRECG}
         handleClose={handleCloseModalRECG}
@@ -108,9 +108,9 @@ export default function Recaudacion() {
               reporte={"CATASTRO"}
             />
           </div>
-          <div className="col">
+          {/*<div className="col">
             <Card modalS={() => setShowModalDeuda(true)} reporte={"DEUDA"} />
-          </div>
+          </div>*/}
           <div className="col">
             <Card modalS={() => setShowModalRECG(true)} reporte={"RECG"} />
           </div>
